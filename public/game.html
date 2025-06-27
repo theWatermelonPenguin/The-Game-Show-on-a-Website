@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Game Room</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>You're in the Game Room!</h1>
+  <p id="gameCode"></p>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+    document.getElementById("gameCode").innerText = "Game Code: " + code;
+  </script>
+</body>
+</html>

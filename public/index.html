@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The Game Show</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>The Game Show</h1>
+
+    <button onclick="createGame()">Create Game</button>
+
+    <div>
+        <input id="codeInput" placeholder="Enter Game Code" />
+        <button onclick="joinGame()">Join Game</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        function createGame() {
+        const gameCode = Math.random().toString(36).substr(2, 5).toUpperCase();
+        socket.emit("createGame", gameCode);
+        window.location.href = `/name.html?code=${gameCode}`;
+        }
+
+        function joinGame() {
+        const code = document.getElementById("codeInput").value.trim().toUpperCase();
+        if (code) {
+            socket.emit("joinGame", code);
+            window.location.href = `/name.html?code=${gameCode}`;
+        }
+        }
+    </script>
+</body>
+</html>

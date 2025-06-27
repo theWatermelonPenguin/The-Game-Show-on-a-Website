@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Enter Name</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Enter Your Game Name</h1>
+
+  <div id="nameInputContainer">
+    <input id="playerName" placeholder="Your name" />
+    <button onclick="submitName()">Submit</button>
+  </div>
+
+  <div id="lobby" style="display:none;">
+    <h2>Players in Room:</h2>
+    <ul id="playerList"></ul>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get("code");
+    let nameSubmitted = false;
+
+    function submitName() {
+      const name = document.getElementById("playerName").value.trim();
+      if (name && !nameSubmitted) {
+        socket.emit("submitName", { code, name });
+        nameSubmitted = true;
+        document.getElementById("nameInputContainer").style.display = "none";
+        document.getElementById("lobby").style.display = "block";
+      }
+    }
+
+    socket.on("updatePlayerList", (players) => {
+      const list = document.getElementById("playerList");
+      list.innerHTML = "";
+      players.forEach((player) => {
+        const li = document.createElement("li");
+        li.textContent = player;
+        list.appendChild(li);
+      });
+    });
+  </script>
+</body>
+</html>
